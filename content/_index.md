@@ -84,6 +84,7 @@ sections:
     title: Experience
   design:
     columns: "2"
+    active: false
 - block: accomplishments
   content:
     date_format: Jan 2006
@@ -116,6 +117,7 @@ sections:
     title: Accomplish&shy;ments
   design:
     columns: "2"
+  active: false
 - block: collection
   content:
     count: 5
@@ -138,6 +140,7 @@ sections:
     columns: "2"
     view: compact
   id: posts
+  active: false
 - block: portfolio
   content:
     buttons:
@@ -189,6 +192,7 @@ sections:
   design:
     columns: "2"
     view: citation
+  active: false
 - block: collection
   content:
     filters:
@@ -199,11 +203,13 @@ sections:
     columns: "2"
     view: compact
   id: talks
+  active: false
 - block: tag_cloud
   content:
     title: Popular Topics
   design:
     columns: "2"
+  active: false
 - block: contact
   content:
     address:
