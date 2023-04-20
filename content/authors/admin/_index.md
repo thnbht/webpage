@@ -1,6 +1,6 @@
 ---
 email: ""
-role: Computational Biologist
+role: Computational Biology
 social:
 - icon: envelope
   icon_pack: fas
@@ -19,4 +19,6 @@ title: thnbht
 ---
 
 welcome to my portfolio
+
+built with blogdown and Hugo, and deployed using Netlify
 {style="text-align: justify;"}
