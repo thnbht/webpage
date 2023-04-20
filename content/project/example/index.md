@@ -2,13 +2,8 @@
 date: "2023-04-20T00:00:00Z"
 external_link: ""
 image:
-  caption: Photo by ???
+  caption: Peripheral blood smear, Mantle cell leukemia as a cause of leukostasis (Smith et. al)
   focal_point: Smart
-links:
-- icon: twitter
-  icon_pack: fab
-  name: Follow
-  url: https://twitter.com/georgecushen
 summary: Step-by-step clustering and visualization of peripheral blood mononuclear cells (PBMC).
 tags:
 - ???
