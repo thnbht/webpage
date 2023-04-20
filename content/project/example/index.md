@@ -1,31 +1,54 @@
 ---
-date: "2016-04-27T00:00:00Z"
+date: "2023-04-27T00:00:00Z"
 external_link: ""
 image:
-  caption: Photo by rawpixel on Unsplash
+  caption: Photo by ???
   focal_point: Smart
 links:
 - icon: twitter
   icon_pack: fab
   name: Follow
   url: https://twitter.com/georgecushen
-slides: example
-summary: An example of using the in-built project page.
+summary: Step-by-step clustering and visualization of peripheral blood mononuclear cells (PBMC).
 tags:
-- Deep Learning
-title: Example Project
+- ???
+title: Immune Cell Clustering
 url_code: ""
 url_pdf: ""
 url_slides: ""
 url_video: ""
 ---
+**Background and Motivation**
+Human peripheral blood mononuclear cells (PBMCs) are isolated from peripheral blood and identified as any blood cell with a round nucleus (i.e. lymphocytes, monocytes, natural killer cells (NK cells) or dendritic cells). PBMCs include lymphocytes (T cells, B cells, and NK cells), monocytes, and dendritic cells. In humans, the frequencies of these populations vary across individuals, but typically, lymphocytes are in the range of 70-90%, monocytes from 10-20%, while dendritic cells are rare, accounting for only 1–2%. Most of the PBMCs are naïve or resting cells without effector functions. In the absence of an ongoing immune response T cells, the largest fraction of the isolated PBMCs, are mainly present as naïve or memory T cells. The naïve T-cells have never encountered their cognate antigen before and are commonly characterized by the absence of activation markers like CD25, CD44 or CD69 and the absence of the memory marker CD45RO isoform. Antigen recognition by a naïve T cell may result in activation of the cell, which will then enter a differentiation program and develop effector functions. After activation the CD4+ T cell subset may develop into diverse effector cell subsets, including Th1, Th2, Th17, Th9, Th22, follicular helper (Tfh) cells and different types of regulatory cells (Akdis et al. 2012; Crotty 2011; Tan and Gery 2012; Sakaguchi et al. 2008). The CD4+ helper T cells are essential mediators of immune homeostasis and inflammation (Hirahara et al. 2013).<sup>1</sup>
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.
+We will be working with a PBMC dataset from 10X Genomics, linked [here] (https://cf.10xgenomics.com/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz). The dataset captures 2,700 single cells sequenced on the Illumina NextSeq 500. We want to cluster cells that are similar to each other, identify cluster biomarkers (differentially expressed features), and then assign cell types to the clusters.
 
-Nullam vel molestie justo. Curabitur vitae efficitur leo. In hac habitasse platea dictumst. Sed pulvinar mauris dui, eget varius purus congue ac. Nulla euismod, lorem vel elementum dapibus, nunc justo porta mi, sed tempus est est vel tellus. Nam et enim eleifend, laoreet sem sit amet, elementum sem. Morbi ut leo congue, maximus velit ut, finibus arcu. In et libero cursus, rutrum risus non, molestie leo. Nullam congue quam et volutpat malesuada. Sed risus tortor, pulvinar et dictum nec, sodales non mi. Phasellus lacinia commodo laoreet. Nam mollis, erat in feugiat consectetur, purus eros egestas tellus, in auctor urna odio at nibh. Mauris imperdiet nisi ac magna convallis, at rhoncus ligula cursus.
+**Getting Started**
+We start by reading in the data. The Read10X() function reads in the output of the cellranger pipeline from 10X, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column). We next use the count matrix to create a Seurat object. The object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset.<sup>2</sup>
 
-Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.
+```R
+library(tidyverse)
+library(patchwork)
+library(Seurat)
 
-Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.
+# Load the dataset
+pbmc_data <- Read10X(data.dir = "/.../filtered_gene_bc_matrices/hg19/")
+# Initialize the Seurat object with the raw data
+pbmc <- CreateSeuratObject(counts = pbmc_data, project = "PBMC", min.cells = 1, min.features = 100)
+```
 
-Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.
+**Data Cleaning**
+
+
+
+
+
+
+
+
+
+_____
+References:
+<sup>1</sup> https://www.ncbi.nlm.nih.gov/books/NBK500157/#:~:text=PBMCs%20include%20lymphocytes%20(T%20cells,for%20only%201%E2%80%932%20%25.
+<sup>2</sup> https://satijalab.org/seurat/articles/pbmc3k_tutorial.html#assigning-cell-type-identity-to-clusters
+
