@@ -20,5 +20,9 @@ title: thnbht
 
 welcome to my portfolio
 
-built with blogdown and Hugo, and deployed using Netlify
+**research interests**: spatial transcriptomics, statistical methods, history/philosophy of science
+**currently learning**: Bioconductor, TDA methods
+**working on**: reading [_The Dialectical Biologist_](https://ia800900.us.archive.org/3/items/TheDialecticalBiologist/Lewontin_-Levins_the_dialectical_biologist.pdf), working through [_Critically Conscious Computing_](https://criticallyconsciouscomputing.org/), compiling potential graduate programs
+
+built with blogdown and Hugo, deployed using Netlify
 {style="text-align: justify;"}
