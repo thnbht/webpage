@@ -20,8 +20,9 @@ title: thnbht
 
 <p style="text-align: center;"> welcome to my portfolio </p>
 
-<p style="text-align: left;"> **research interests**: spatial transcriptomics, statistical methods, history/philosophy of science </p> \
-<p style="text-align: left;"> **currently learning**: Bioconductor, TDA methods </p> \
-<p style="text-align: left;"> **working on**: reading [_The Dialectical Biologist_](https://ia800900.us.archive.org/3/items/TheDialecticalBiologist/Lewontin_-Levins_the_dialectical_biologist.pdf), working through [_Critically Conscious Computing_](https://criticallyconsciouscomputing.org/), compiling potential graduate programs </p>
+
+**research interests**: spatial transcriptomics, statistical methods, history/philosophy of science \
+**currently learning**: Bioconductor, TDA methods \
+**working on**: reading [_The Dialectical Biologist_](https://ia800900.us.archive.org/3/items/TheDialecticalBiologist/Lewontin_-Levins_the_dialectical_biologist.pdf), working through [_Critically Conscious Computing_](https://criticallyconsciouscomputing.org/), compiling potential graduate programs
 
 <p style="text-align: center;"> built with blogdown and Hugo, deployed using Netlify </p>
