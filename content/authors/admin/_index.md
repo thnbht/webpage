@@ -19,7 +19,7 @@ title: thnbht
 ---
 
 welcome to my portfolio
-{style="text-align: justify;"}
+{style="text-align: center;"}
 
 **research interests**: spatial transcriptomics, statistical methods, history/philosophy of science \
 **currently learning**: Bioconductor, TDA methods \
@@ -27,4 +27,4 @@ welcome to my portfolio
 {style="text-align: left;"}
 
 built with blogdown and Hugo, deployed using Netlify
-{style="text-align: justify;"}
+{style="text-align: center;"}
