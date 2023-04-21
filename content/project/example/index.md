@@ -88,22 +88,43 @@ Now that the data has been cleaned, we can move on to transforming the data into
 1. In order to make accurate comparisions of gene expression between samples, we must normalize gene counts. The counts of mapped reads for each gene is proportional to the expression of mRNA (signal) in addition to many other factors (noise). Normalization is the process of scaling raw count values to account for the noise.
 
 The most common factors to consider during normalization include:
--Sequencing depth: Accounting for sequencing depth is necessary for comparison of gene expression between samples. In the example below, each gene appears to have doubled in expression in Sample A relative to Sample B, however this is a consequence of Sample A having double the sequencing depth.
+- Sequencing depth: Accounting for sequencing depth is necessary for comparison of gene expression between samples. In the example below, each gene appears to have doubled in expression in Sample A relative to Sample B, however this is a consequence of Sample A having double the sequencing depth.
 
--Gene length: Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, Gene X and Gene Y have similar levels of expression, but the number of reads mapped to Gene X would be many more than the number mapped to Gene Y because Gene X is longer.
+- Gene length: Accounting for gene length is necessary for comparing expression between different genes within the same sample. In the example, Gene X and Gene Y have similar levels of expression, but the number of reads mapped to Gene X would be many more than the number mapped to Gene Y because Gene X is longer.
 
--RNA composition: A few highly differentially expressed genes between samples, differences in the number of genes expressed between samples, or presence of contamination can skew some types of normalization methods. Accounting for RNA composition is recommended for accurate comparison of expression between samples, and is particularly important when performing differential expression analyses.
+- RNA composition: A few highly differentially expressed genes between samples, differences in the number of genes expressed between samples, or presence of contamination can skew some types of normalization methods. Accounting for RNA composition is recommended for accurate comparison of expression between samples, and is particularly important when performing differential expression analyses.
 
 In the example, if we were to divide each sample by the total number of counts to normalize, the counts would be greatly skewed by the DE gene, which takes up most of the counts for Sample A, but not Sample B. Most other genes for Sample A would be divided by the larger number of total counts and appear to be less expressed than those same genes in Sample B.
 
 There are several normalization methods that account for some of these differences, but the one we will use is trimmed mean of M values (TMM). This method uses a weighted trimmed mean (the average after removing the upper and lower x% of the data) of the log expression ratios between samples. TMM accounts for all three factors, and can be used in gene count comparisons _between_ and _within_ samples.
 
 ```R
-
+# TMM Code
 ```
 
-2. Feature selection
-3. Scaling
+2. We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). This is to distinguish true biological variability from the high levels of technical noise in single-cell experiments.<sup>5</sup>
+
+Selection methods include (Seurat doc)
+- vst: First, fits a line to the relationship of log(variance) and log(mean) using local polynomial regression (loess). Then standardizes the feature values using the observed mean and expected variance (given by the fitted line). Feature variance is then calculated on the standardized values after clipping to a maximum (see clip.max parameter).
+
+- mean.var.plot (mvp): First, uses a function to calculate average expression (mean.function) and dispersion (dispersion.function) for each feature. Next, divides features into num.bin (deafult 20) bins based on their average expression, and calculates z-scores for dispersion within each bin. The purpose of this is to identify variable features while controlling for the strong relationship between variability and average expression.
+
+```R
+# plot1 plot2 diff selection methods
+```
+
+3. Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The ScaleData() function:
+
+- Shifts the expression of each gene, so that the mean expression across cells is 0
+- Scales the expression of each gene, so that the variance across cells is 1
+-- This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
+
+The results of this are stored in pbmc[["RNA"]]@scale.data
+
+```R
+all.genes <- rownames(pbmc)
+pbmc <- ScaleData(pbmc, features = all.genes)
+```
 
 **PCA** <a name="pca"></a>\
 
@@ -122,4 +143,5 @@ References:\
 <sup>1</sup> Mantle cell leukemia as a cause of leukostasis (Smith et. al)\
 <sup>2>/sup> https://www.ncbi.nlm.nih.gov/books/NBK500157/#:~:text=PBMCs%20include%20lymphocytes%20(T%20cells,for%20only%201%E2%80%932%20%25.\
 <sup>3</sup> https://satijalab.org/seurat/articles/pbmc3k_tutorial.html#assigning-cell-type-identity-to-clusters \
-<sup>4</sup> https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html
+<sup>4</sup> https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html \
+<sup>5</sup> https://www.nature.com/articles/nmeth.2645
