@@ -6,29 +6,29 @@ image:
   focal_point: Smart
 summary: Step-by-step clustering and visualization of peripheral blood mononuclear cells (PBMC).
 tags:
-- Immunology
 - Data viz
-title: Immune Cell Clustering
+- Single cell
+title: Single-Cell RNA-Seq: Unsupervised Clustering
 url_code: ""
 url_pdf: ""
 url_slides: ""
 url_video: ""
 ---
 ## Table of contents
-1. [Background and motivation](#background-and-motivation)
+1. [Introduction](#introduction)
 2. [Getting started](#getting-started)
 3. [Data cleaning](#data-cleaning)
 4. [Data transformation](#data-transformation)
 5. [PCA](#pca)
 6. [UMAP/tSNE](#umap-tsne)
 7. [Annotation](#annotation)
+-----
+**Introduction** <a name="introduction"></a>\
+Single cell RNA sequencing (scRNA-seq) is a method for measuring gene expression by quantifying RNA transcripts. In contrast to bulk RNA sequencing, which captures average global gene expression, scRNA-seq captures heterogenous cell composition and makes it possible to model cell-cell interactions and molecular microenvironments.
 
-**Background and motivation** <a name="background-and-motivation"></a>\
-Human peripheral blood mononuclear cells (PBMCs) are any blood cell with a round nucleus. PBMCs include lymphocytes (T cells, B cells, and NK cells), monocytes, and dendritic cells. In humans, the frequencies of these populations vary across individuals, but typically, lymphocytes are in the range of 70-90%, monocytes from 10-20%, while dendritic cells are rare, accounting for only 1–2%. 
-  
-Most PBMCs are naïve or resting cells without effector functions. In the absence of an ongoing immune response T cells, the largest fraction of the isolated PBMCs, are mainly present as naïve or memory T cells. The naïve T-cells have never encountered their cognate antigen before and are commonly characterized by the absence of activation markers like CD25, CD44 or CD69 and the absence of the memory marker CD45RO isoform. Antigen recognition by a naïve T cell may result in activation of the cell, which will then enter a differentiation program and develop effector functions.<sup>2</sup>
+Although there are a variety of scRNA-seq protocols, they all follow a general design. First, the cells must be dissociate and be isolated. The isolated cells are then encapsulated by droplets or wells. After encapsulation, the cell is lysed and the transcripts within are barcoded with short nucleotide tags referencing from which cell the given transcript originated. From there, the transcripts are then amplified and quantified, typically through qPCR.
 
-Thus, we can differentiate the tissue microenvironment and understand its cellular composition by analyzing the biomarkers expressed through mRNA.
+Upon quantification, the data must first be cleaned through a series of identifying cells of interest. Next, several methods for minimizing noise, both statistical and technical, are employed. Due to the high dimensionality inherent to genomic data, dimensionality reduction is used to aid in ease of analysis. Finally, the analysis of interest can be carried out.
   
 We will be working with a PBMC dataset from 10X Genomics, linked [here](https://cf.10xgenomics.com/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz). The dataset captures 2,700 single cells sequenced on the Illumina NextSeq 500. We want to cluster cells that are similar to each other, identify cluster biomarkers (differentially expressed features), and then assign cell types to the clusters.
 
